@@ -1,7 +1,6 @@
 import DiaDiem from '@components/home/DiaDiemComponent';
 import TopBoats from '@components/home/top-boats';
 import LichTrinhComponent from '@components/lichTrinh';
-import { sendRequest } from 'app/utilsHandle/api';
 import Image from 'next/image';
 
 export const metadata = {
@@ -16,22 +15,25 @@ export const metadata = {
   },
 };
 const MainPage = async () => {
-  const current = 1;
-  const pageSize = 10;
   // const session = await auth();
 
-  const res = await sendRequest<IBackendRes<any>>({
-    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
+  // const res = await sendRequest<IBackendRes<any>>({
+  //   url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/products`,
+  //   method: 'GET',
+  //   queryParams: {
+  //     current,
+  //     pageSize,
+  //   },
+  //   nextOption: {
+  //     next: { revalidateTag: ['list-products'] },
+  //   },
+  // });
+  const res = await fetch(`https://dalatmobile.com/api/v1/products`, {
     method: 'GET',
-    queryParams: {
-      current,
-      pageSize,
-    },
-    nextOption: {
-      next: { revalidateTag: ['list-products'] },
-    },
+    next: { tags: ['list-products'] },
   });
-
+  // const total_items = +(res.headers?.get("X-Total-Count") ?? 0)
+  const data = await res.json();
   return (
     <main className="flex min-h-screen w-full flex-col items-center p-8">
       <Image
@@ -196,7 +198,7 @@ const MainPage = async () => {
         Bảng giá cho xe đưa đón tận sân bay, tour tham quan nội thành Đà Lạt, ngoại thành Đà Lạt, tour trong ngày giá rẻ
         nhất Đà Lạt
       </h2>
-      <TopBoats datas={res?.data?.results ?? []} metas={res?.data?.meta} />
+      <TopBoats datas={data?.results ?? []} metas={data?.meta} />
       <LichTrinhComponent />
       <DiaDiem />
     </main>

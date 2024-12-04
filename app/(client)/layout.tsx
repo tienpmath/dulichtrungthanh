@@ -1,11 +1,11 @@
 import '@styles/global.css';
 
 import Footers from '@components/footer/Footer';
+import FooterTop from '@components/ui/footer';
 import GlobalNav from '@components/ui/global-nav';
 import { Raleway } from 'next/font/google';
 
 import { Providers } from './provider';
-import FooterTop from '@components/ui/footer';
 
 const raleway = Raleway({ subsets: ['latin'] });
 
